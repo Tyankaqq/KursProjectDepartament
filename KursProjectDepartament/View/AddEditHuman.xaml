@@ -1,0 +1,106 @@
+﻿<Page x:Class="KursProjectDepartament.View.AddEditHuman"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:KursProjectDepartament.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="1000" d:DesignWidth="800"
+      Title="AddEditHuman">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" Grid.Row="0">
+        <Label Content="Введите фамилию сотрудника" Margin="10 0"/>
+        <TextBox x:Name="SurnameTextBox" Margin="10 0" FontSize="16"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="1">
+            <Label Content="Введите имя " Margin="10 0"/>
+            <TextBox x:Name="NameTextBox" Margin="10 0" FontSize="16"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="2">
+            <Label Content="Введите отчество" Margin="10 0"/>
+            <TextBox x:Name="MiddleNameTextBox" Margin="10 0" FontSize="16"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="3">
+            <Label Content="Выберите отдел" Margin="10 0"/>
+            <ComboBox x:Name="DepartmentComboBox" Margin="10 0" FontSize="16" DisplayMemberPath="DepartmentName" Foreground="Black"/>
+        </StackPanel>
+
+
+        <StackPanel Orientation="Vertical" Grid.Row="4">
+            <Label Content="Введите адрес проживания сотрудника" Margin="10 0"/>
+            <TextBox x:Name="AddressTextBox" Margin="10 0" FontSize="16"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="5">
+            <Label Content="Выберите Дату Рождения сотрудника" Margin="10 0"/>
+            <DatePicker x:Name="BirthDayDatePicker" SelectedDate="{Binding SelectedEmployee.BirthDate, Mode=TwoWay}" 
+                    DisplayDateStart="1900-01-01"
+                    DisplayDateEnd="2030-12-31"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="6">
+            <Label Content="Выберите должность сотрудника " Margin="10 0"/>
+            <TextBox x:Name="PositionTextBox" Margin="10 0" FontSize="16"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="7">
+            <Label Content="Введите семейное положение " Margin="10 0"/>
+            <TextBox x:Name="MaritalStatusTextBox" Margin="10 0" FontSize="16"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="8">
+            <Label Content="Введите номер телефона " Margin="10 0"/>
+            <TextBox x:Name="PhoneNumberTextBox" Margin="10 0" FontSize="16"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="9">
+            <Label Content="Введите электронную почту " Margin="10 0"/>
+            <TextBox x:Name="EmailTextBox" Margin="10 0" FontSize="16"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="10">
+            <Label Content="Введите дату найма сотрудника " Margin="10 0"/>
+            <DatePicker x:Name="HireDateTextBox" SelectedDate="{Binding SelectedEmployee.BirthDate, Mode=TwoWay}" 
+        DisplayDateStart="1900-01-01"
+        DisplayDateEnd="2030-12-31"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="11">
+            <Label Content="Введите пол сотрудника " Margin="10 0"/>
+            <TextBox x:Name="GenderTextBox" Margin="10 0" FontSize="16"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="12">
+            <Label Content="Введите количество детей у сотрудника " Margin="10 0"/>
+            <TextBox x:Name="ChildrenTextBox" Margin="10 0" FontSize="16"/>
+        </StackPanel>
+        <Grid Grid.Row="13">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Сохранить" Margin="20 10" Grid.Column="0" Click="Button_Click"/>
+            <Button Content="Отмена" Margin="20 10" Grid.Column="1"/>
+        </Grid>
+    </Grid>
+</Page>
