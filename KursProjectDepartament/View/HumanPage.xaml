@@ -9,29 +9,40 @@
       Title="HumanPage">
 
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <WrapPanel x:Name="EmployeeWrapPanel">
-                
-                <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Padding="10" Margin="10" Width="200">
-                    <StackPanel>
-                        
-                        <TextBlock x:Name="FIO" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
-                        
-                        <TextBlock x:Name="Position" FontSize="14" HorizontalAlignment="Center" Margin="0,0,0,5"/>
-
-                        <TextBlock x:Name="Phone" Text="Телефон:" FontSize="12" Margin="0,0,0,5"/>
-                        <TextBlock x:Name="Children" Text="Количество Детей: " FontSize="12" Margin="0,0,0,5"/>
-                        <TextBlock x:Name="Marital_status" Text="Семейное положение:" FontSize="12" Margin="0,0,0,5"/>
-                        <TextBlock x:Name="BirthDate" Text="Дата рождение: " FontSize="12" Margin="0,0,0,5"/>
-                        <TextBlock x:Name="Gender" Text="Пол: " FontSize="12" Margin="0,0,0,5"/>
-                        <TextBlock x:Name="Adress" Text="Адрес проживания: " FontSize="12" Margin="0,0,0,5"/>
-                        <TextBlock x:Name="hire_date" Text="Дата найма: " FontSize="12" Margin="0,0,0,5"/>
-                        <TextBlock x:Name="Email" Text="Email: ivanov@example.com" FontSize="12" Margin="0,0,0,5"/>
-                        
-                        <Button Content="Редактировать" Width="100" Height="30" HorizontalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-            </WrapPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled"> 
+            
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
+            <Button Content="Сотрудники без высшего образования" Click="EmployeesWithoutHigherEducation_Click"/>
+            <Button Content="Сотрудники с несоответствующим образованием" Click="EmployeesWithMismatchedEducation_Click"/>
+            <Button Content="Приказы и распоряжения для сотрудника" Click="EmployeePromotions_Click"/>
+            <Button Content="Количество детей по семейному положению" Click="ChildrenCountByMaritalStatus_Click"/>
+            <Button Content="Все дети сотрудников" Click="AllChildren_Click"/>
+                <StackPanel>
+                    <TextBox x:Name="Adress"/>
+                    <Button Content="Сотрудники не проживающие в городе" Click="EmployeesNotLivingInCity_Click"/>
+                </StackPanel>
+            <Button Content="Сотрудники отдела" Click="DepartmentEmployees_Click"/>
+                <StackPanel>
+                    <ComboBox x:Name="DepartmentComboBox" Margin="10 0" FontSize="16" DisplayMemberPath="DepartmentName" Foreground="Black"/>
+                    <Button Content="Сотрудники отдела" Click="DepartmentEmployees_Click"/>
+                </StackPanel>
+                <StackPanel>
+                    <DatePicker x:Name="DateStart" SelectedDate="{Binding SelectedEmployee.BirthDate, Mode=TwoWay}" 
+        DisplayDateStart="1900-01-01"
+        DisplayDateEnd="2030-12-31"/>
+                    <DatePicker x:Name="DateEnd" SelectedDate="{Binding SelectedEmployee.BirthDate, Mode=TwoWay}" 
+        DisplayDateStart="1900-01-01"
+        DisplayDateEnd="2030-12-31"/>
+                    <Button Content="Сотрудники на больничном или в отпуске" Click="EmployeesOnLeave_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <WrapPanel x:Name="EmployeeWrapPanel"/>
         </ScrollViewer>
     </Grid>
 </Page>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices.ActiveDirectory;
 using Microsoft.EntityFrameworkCore;
 
 namespace KursProjectDepartament.Model;
@@ -108,12 +109,22 @@ public partial class HumanDepartmentDbContext : DbContext
     // Список сотрудников на больничном или в отпуске в заданный период
     public List<Employee> GetEmployeesOnLeave(DateTime startDate, DateTime endDate)
     {
-        var employeesOnSickLeave = SickLeaves
-            .Where(sl => DateTime.Parse(sl.StartDate).CompareTo(endDate) <= 0 && DateTime.Parse(sl.EndDate).CompareTo(startDate) >= 0)
-            .Select(sl => sl.Employee)
-            .ToList();
+        var allSickLeaves = SickLeaves.ToList(); // Загрузка всех записей из таблицы SickLeaves с включением связанного сотрудника
 
-        return employeesOnSickLeave;
+        var employeesOnSickLeave = new List<Employee>();
+
+        foreach (var sickLeave in allSickLeaves)
+        {
+            DateTime sickLeaveStartDate = DateTime.Parse(sickLeave.StartDate);
+            DateTime sickLeaveEndDate = DateTime.Parse(sickLeave.EndDate);
+
+            if (sickLeaveStartDate <= endDate && sickLeaveEndDate >= startDate)
+            {
+                employeesOnSickLeave.Add(sickLeave.Employee);
+            }
+        }
+
+        return employeesOnSickLeave.Distinct().ToList(); // Удаление дубликатов сотрудников
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
