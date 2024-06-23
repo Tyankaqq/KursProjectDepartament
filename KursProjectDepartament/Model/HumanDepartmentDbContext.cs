@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.DirectoryServices.ActiveDirectory;
+using System.Windows.Controls;
 using Microsoft.EntityFrameworkCore;
 
 namespace KursProjectDepartament.Model;
@@ -15,7 +16,7 @@ public partial class HumanDepartmentDbContext : DbContext
         : base(options)
     {
     }
-
+    public virtual DbSet<Order> Orders { get; set; }
     public virtual DbSet<Department> Departments { get; set; }
 
     public virtual DbSet<Education> Educations { get; set; }
@@ -29,29 +30,41 @@ public partial class HumanDepartmentDbContext : DbContext
     public virtual DbSet<Vacation> Vacations { get; set; }
 
     public virtual DbSet<WorkHistory> WorkHistories { get; set; }
-    public Employee GetEmployeeById(int employeeId)
+    
+    public Employee GetEmployeeById(int? employeeId)
     {
         return Employees.FirstOrDefault(e => e.EmployeeId == employeeId);
     }
 
     // Список сотрудников без высшего образования
-    public List<Employee> GetEmployeesWithoutHigherEducation()
+    public List<Education> GetEmployeesWithoutHigherEducation()
     {
-        var employeesWithoutHigherEducation = Employees
-            .Where(e => !Educations.Any(ed => ed.EmployeeId == e.EmployeeId && ed.Degree == "Высшее"))
-            .ToList();
+        var educationWithoutHigherDegree = Educations
+        .Include(e => e.Employee)
+        .Where(ed => ed.Degree != "Высшее")
+        .ToList();
 
-        return employeesWithoutHigherEducation;
+        return educationWithoutHigherDegree;
     }
 
     // Список сотрудников, образование которых не соответствует должности
-    public List<Employee> GetEmployeesWithMismatchedEducation()
+    public List<Employee> GetEducationsWithMismatchedFieldOfStudy()
     {
-        var employeesWithMismatchedEducation = Employees
-            .Where(e => e.Educations.Any(ed => ed.EmployeeId == e.EmployeeId && ed.FieldOfStudy != e.Position))
-            .ToList();
+        using (var dbContext = new HumanDepartmentDbContext())
+        {
+            var employees = new List<Employee>();
+            var educationsWithMismatchedFieldOfStudy = dbContext.Educations
+                .Include(ed => ed.Employee) // Включаем связанные данные из таблицы Employee
+                .Where(ed => ed.FieldOfStudy != ed.Employee.Position)
+                .ToList();
 
-        return employeesWithMismatchedEducation;
+            foreach (var employee in educationsWithMismatchedFieldOfStudy)
+            {
+                employees.Add(GetEmployeeById(employee.EmployeeId));
+            }
+
+            return employees;
+        }
     }
 
     // Все приказы и распоряжения для заданного сотрудника
@@ -60,33 +73,12 @@ public partial class HumanDepartmentDbContext : DbContext
         return Promotions.Where(p => p.EmployeeId == employeeId).ToList();
     }
 
-    // Количество детей у сотрудника (зависит от семейного положения)
-    public Dictionary<string, int> GetChildrenCountByMaritalStatus()
-    {
-        var employees = Employees.Include(e => e.Children).ToList(); // Получаем всех сотрудников с их детьми
-
-        // Инициализируем словарь для хранения количества детей по семейному положению
-        var childrenCountByMaritalStatus = new Dictionary<string, int>();
-
-        // Перебираем все возможные значения семейного положения
-        var maritalStatuses = employees.Select(e => e.MaritalStatus).Distinct();
-        foreach (var status in maritalStatuses)
-        {
-            int childrenCount = employees
-                .Where(e => e.MaritalStatus == status) // Фильтруем сотрудников по семейному положению
-                .Sum(e => e.Children); // Суммируем количество детей у всех сотрудников с указанным семейным положением
-
-            childrenCountByMaritalStatus.Add(status ?? "Не указано", childrenCount);
-        }
-
-        return childrenCountByMaritalStatus;
-    }
 
     // Список всех детей сотрудников (в зависимости от семейного положения)
     public List<Employee> GetAllChildren()
     {
         var allChildren = Employees
-            .Where(e => e.MaritalStatus == "В браке") // Фильтруем только по семейному положению "Married"
+            .Where(e => e.Children > 0)
             .ToList();
 
         return allChildren;
@@ -118,9 +110,9 @@ public partial class HumanDepartmentDbContext : DbContext
             DateTime sickLeaveStartDate = DateTime.Parse(sickLeave.StartDate);
             DateTime sickLeaveEndDate = DateTime.Parse(sickLeave.EndDate);
 
-            if (sickLeaveStartDate <= endDate && sickLeaveEndDate >= startDate)
+            if (sickLeaveStartDate.Date <= endDate && sickLeaveEndDate.Date >= startDate)
             {
-                employeesOnSickLeave.Add(sickLeave.Employee);
+                employeesOnSickLeave.Add(GetEmployeeById(sickLeave.EmployeeId));
             }
         }
 
@@ -223,8 +215,21 @@ public partial class HumanDepartmentDbContext : DbContext
             entity.HasOne(d => d.Employee).WithMany(p => p.WorkHistories).HasForeignKey(d => d.EmployeeId);
         });
 
+        modelBuilder.Entity<Order>(entity =>
+        {
+            entity.Property(e => e.OrderId).HasColumnName("order_id");
+            entity.Property(e => e.EmployeeId).HasColumnName("employee_id");
+            entity.Property(e => e.OrderType).HasColumnName("order_type");
+            entity.Property(e => e.OrderDate).HasColumnName("order_date");
+            entity.Property(e => e.OrderDetails).HasColumnName("order_details");
+
+            entity.HasOne(d => d.Employee).WithMany(p => p.Orders).HasForeignKey(d => d.EmployeeId);
+        });
+
         OnModelCreatingPartial(modelBuilder);
     }
-
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
+
+
+

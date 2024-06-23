@@ -29,6 +29,7 @@ namespace KursProjectDepartament.View
             InitializeComponent();
             LoadEmployeeDetails();
             LoadDepartments();
+
         }
         private void LoadDepartments()
         {
@@ -38,7 +39,7 @@ namespace KursProjectDepartament.View
                 DepartmentComboBox.ItemsSource = departments;
             }
         }
-            private void LoadEmployeeDetails()
+        private void LoadEmployeeDetails()
         {
             using (var dbContext = new HumanDepartmentDbContext())
             {
@@ -65,6 +66,7 @@ namespace KursProjectDepartament.View
                 {
                     Children =
                     {
+                        
                         new TextBlock { Text = $"{employee.LastName} {employee.FirstName} {employee.MiddleName}", FontSize = 16, FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Center, Margin = new Thickness(0, 0, 0, 5) },
                         new TextBlock { Text = employee.Position, FontSize = 14, HorizontalAlignment = HorizontalAlignment.Center, Margin = new Thickness(0, 0, 0, 5) },
                         new TextBlock { Text = $"Телефон: {employee.PhoneNumber}", FontSize = 12, Margin = new Thickness(0, 0, 0, 5) },
@@ -74,7 +76,7 @@ namespace KursProjectDepartament.View
                         new TextBlock { Text = $"Пол: {employee.Gender}", FontSize = 12, Margin = new Thickness(0, 0, 0, 5) },
                         new TextBlock { Text = $"Адрес проживания: {employee.Address}", FontSize = 12, Margin = new Thickness(0, 0, 0, 5) },
                         new TextBlock { Text = $"Дата найма: {employee.HireDate}", FontSize = 12, Margin = new Thickness(0, 0, 0, 5) },
-                        new TextBlock { Text = $"Email: {employee.Email}", FontSize = 12, Margin = new Thickness(0, 0, 0, 5) }
+                        new TextBlock { Text = $"Email: {employee.Email}", FontSize = 12, Margin = new Thickness(0, 0, 0, 5) },
                     }
                 }
             };
@@ -83,10 +85,10 @@ namespace KursProjectDepartament.View
         }
         private void EmployeesWithoutHigherEducation_Click(object sender, RoutedEventArgs e)
         {
-            using (var dbContext = new HumanDepartmentDbContext())
-            {
-                var employees = dbContext.GetEmployeesWithoutHigherEducation();
-                RefreshEmployeeCards(employees);
+            using(var dbContext = new HumanDepartmentDbContext())
+    {
+                var educations = dbContext.GetEmployeesWithoutHigherEducation();
+                RefreshEmployeeCards(educations);
             }
         }
 
@@ -94,35 +96,97 @@ namespace KursProjectDepartament.View
         {
             using (var dbContext = new HumanDepartmentDbContext())
             {
-                var employees = dbContext.GetEmployeesWithMismatchedEducation();
+                var employees = dbContext.GetEducationsWithMismatchedFieldOfStudy();
                 RefreshEmployeeCards(employees);
             }
         }
+        private void CreateOrderCards(List<Order> orders)
+        {
+            EmployeeWrapPanel.Children.Clear(); // Очищаем WrapPanel перед добавлением новых карточек
 
+            foreach (var order in orders)
+            {
+                // Создаем новую карточку
+                var card = new Border
+                {
+                    BorderBrush = Brushes.Black,
+                    BorderThickness = new Thickness(1),
+                    Margin = new Thickness(10),
+                    Padding = new Thickness(10),
+                    Width = 400,
+                    Height = 100,
+                    Background = Brushes.LightGray
+                };
+
+                // Добавляем содержимое карточки
+                var stackPanel = new StackPanel();
+
+                // Добавляем информацию о приказе в текстовые блоки или другие элементы управления
+                var textBlock1 = new TextBlock
+                {
+                    Text = $"Дата: {order.OrderDate}",
+                    Margin = new Thickness(0, 0, 0, 5),
+                    FontWeight = FontWeights.Bold
+                };
+                stackPanel.Children.Add(textBlock1);
+
+                var textBlock2 = new TextBlock
+                {
+                    Text = $"Тип: {order.OrderType}",
+                    Margin = new Thickness(0, 0, 0, 5)
+                };
+                stackPanel.Children.Add(textBlock2);
+
+                var textBlock3 = new TextBlock
+                {
+                    Text = $"Описание: {order.OrderDetails}",
+                    Margin = new Thickness(0, 0, 0, 5)
+                };
+                stackPanel.Children.Add(textBlock3);
+
+                // Добавляем созданный StackPanel в карточку
+                card.Child = stackPanel;
+
+                // Добавляем карточку в WrapPanel
+                EmployeeWrapPanel.Children.Add(card);
+            }
+        }
         private void EmployeePromotions_Click(object sender, RoutedEventArgs e)
         {
-            using (var dbContext = new HumanDepartmentDbContext())
+            int employeeId;
+            if (int.TryParse(EmployeeIdTextBox.Text, out employeeId))
             {
-                var employees = dbContext.GetEmployeesWithMismatchedEducation();
-                RefreshEmployeeCards(employees);
+                using (var dbContext = new HumanDepartmentDbContext())
+                {
+                    var orders = dbContext.Orders
+                        .Where(o => o.EmployeeId == employeeId)
+                        .ToList();
+
+                    CreateOrderCards(orders); // Используем новый метод для создания карточек Order
+                }
+            }
+            else
+            {
+                MessageBox.Show("Введите корректный ID сотрудника");
             }
         }
 
-        private void ChildrenCountByMaritalStatus_Click(object sender, RoutedEventArgs e)
-        {
-            using (var dbContext = new HumanDepartmentDbContext())
-            {
-                var employees = dbContext.GetEmployeesWithMismatchedEducation();
-                RefreshEmployeeCards(employees);
-            }
-        }
 
         private void AllChildren_Click(object sender, RoutedEventArgs e)
         {
+            int countChildren = 0;
             using (var dbContext = new HumanDepartmentDbContext())
             {
+
                 var employees = dbContext.GetAllChildren();
-                RefreshEmployeeCards(employees);
+                EmployeeWrapPanel.Children.Clear();
+                foreach (var employee in employees)
+                {
+                    var card = CreateEmployeeCard(employee);
+                    EmployeeWrapPanel.Children.Add(card);
+                    countChildren += employee.Children;
+                }
+                MessageBox.Show("Количество детей:" + countChildren.ToString());
             }
         }
 
@@ -167,7 +231,6 @@ namespace KursProjectDepartament.View
                 RefreshEmployeeCards(employees);
             }
         }
-
         private void RefreshEmployeeCards(List<Employee> employees)
         {
             EmployeeWrapPanel.Children.Clear();
@@ -175,6 +238,18 @@ namespace KursProjectDepartament.View
             {
                 var card = CreateEmployeeCard(employee);
                 EmployeeWrapPanel.Children.Add(card);
+            }
+        }
+        private void RefreshEmployeeCards(List<Education> educations)
+        {
+            EmployeeWrapPanel.Children.Clear(); // Очищаем текущие карточки сотрудников
+
+            foreach (var education in educations)
+            {
+                var employee = education.Employee; // Получаем сотрудника из образования
+
+                var card = CreateEmployeeCard(employee); // Создаем карточку сотрудника на основе полученного сотрудника
+                EmployeeWrapPanel.Children.Add(card); // Добавляем карточку сотрудника в WrapPanel
             }
         }
     }

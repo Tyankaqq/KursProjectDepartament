@@ -167,5 +167,6 @@ public partial class Employee : Baseclass
     public virtual ICollection<Vacation> Vacations { get; set; } = new List<Vacation>();
 
     public virtual ICollection<WorkHistory> WorkHistories { get; set; } = new List<WorkHistory>();
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }
 

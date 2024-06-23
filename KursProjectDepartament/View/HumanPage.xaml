@@ -7,28 +7,28 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HumanPage">
-
+   
     <Grid>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled"> 
             
-            <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
-            <Button Content="Сотрудники без высшего образования" Click="EmployeesWithoutHigherEducation_Click"/>
-            <Button Content="Сотрудники с несоответствующим образованием" Click="EmployeesWithMismatchedEducation_Click"/>
-            <Button Content="Приказы и распоряжения для сотрудника" Click="EmployeePromotions_Click"/>
-            <Button Content="Количество детей по семейному положению" Click="ChildrenCountByMaritalStatus_Click"/>
-            <Button Content="Все дети сотрудников" Click="AllChildren_Click"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10" Height="50">
+                <Button Content="Сотрудники без высшего образования" Click="EmployeesWithoutHigherEducation_Click" Foreground="Black"/>
+                <Button Content="Сотрудники с несоответствующим образованием" Click="EmployeesWithMismatchedEducation_Click" Foreground="Black"/>
+                <TextBox Name="EmployeeIdTextBox" Width="200" Height="25" Margin="10" Text = "Введите ID:"/>
+                <Button Content="Приказы и распоряжения для сотрудника" Click="EmployeePromotions_Click" Foreground="Black" Width="200" Height="25" Margin="10"/>
+                <Button Content="Все дети сотрудников" Click="AllChildren_Click" Foreground="Black"/>
                 <StackPanel>
                     <TextBox x:Name="Adress"/>
-                    <Button Content="Сотрудники не проживающие в городе" Click="EmployeesNotLivingInCity_Click"/>
+                    <Button Content="Сотрудники не проживающие в городе" Click="EmployeesNotLivingInCity_Click" Foreground="Black"/>
                 </StackPanel>
-            <Button Content="Сотрудники отдела" Click="DepartmentEmployees_Click"/>
                 <StackPanel>
                     <ComboBox x:Name="DepartmentComboBox" Margin="10 0" FontSize="16" DisplayMemberPath="DepartmentName" Foreground="Black"/>
-                    <Button Content="Сотрудники отдела" Click="DepartmentEmployees_Click"/>
+                    <Button Content="Сотрудники отдела" Click="DepartmentEmployees_Click" Foreground="Black"/>
                 </StackPanel>
                 <StackPanel>
                     <DatePicker x:Name="DateStart" SelectedDate="{Binding SelectedEmployee.BirthDate, Mode=TwoWay}" 
@@ -37,7 +37,7 @@
                     <DatePicker x:Name="DateEnd" SelectedDate="{Binding SelectedEmployee.BirthDate, Mode=TwoWay}" 
         DisplayDateStart="1900-01-01"
         DisplayDateEnd="2030-12-31"/>
-                    <Button Content="Сотрудники на больничном или в отпуске" Click="EmployeesOnLeave_Click"/>
+                    <Button Content="Сотрудники на больничном или в отпуске" Click="EmployeesOnLeave_Click" Foreground="Black"/>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
