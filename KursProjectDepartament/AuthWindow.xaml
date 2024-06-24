@@ -18,11 +18,14 @@
         </Grid.RowDefinitions>
         <TextBlock Text="Username:" Margin="10"/>
         <TextBox x:Name="UsernameTextBox" Grid.Row="1" Margin="10"/>
-        <TextBlock Text="Password:" Grid.Row="2" Margin="10"
-                   materialDesign:HintAssist.HelperText="At least 8 characters"
-                   materialDesign:HintAssist.Hint="Password"
-                   materialDesign:TextFieldAssist.HasClearButton="True"/>
-        <PasswordBox x:Name="PasswordBox" Grid.Row="3" Margin="10"/>
-        <Button Content="Login" Grid.Row="4" Margin="10,10,10,10" Click="LoginButton_Click"/>
+        <StackPanel Margin="0,0,0,88" Grid.Row="3">
+        <PasswordBox x:Name="PasswordBox" Grid.Row="3" Margin="10,10,10,118" Height="30"
+    materialDesign:HintAssist.HelperText="At least 8 characters"
+  materialDesign:HintAssist.Hint="Password"
+    materialDesign:PasswordBoxAssist.Password="{Binding Password1, Mode=TwoWay}"
+    materialDesign:TextFieldAssist.HasClearButton="True"
+    Style="{StaticResource MaterialDesignRevealPasswordBox}" />
+        </StackPanel>
+        <Button Content="Login" Grid.Row="3" Margin="10,84,10,42" Click="LoginButton_Click"/>
     </Grid>
 </Window>

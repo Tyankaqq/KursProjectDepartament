@@ -1,5 +1,4 @@
 ﻿using KursProjectDepartament.Model;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace KursProjectDepartament.View
@@ -39,14 +37,14 @@ namespace KursProjectDepartament.View
         public AddEditHuman()
         {
             InitializeComponent();
-            dbContext = new HumanDepartmentDbContext();    
+            dbContext = new HumanDepartmentDbContext();
             LoadDepartments();
         }
         private void LoadDepartments()
         {
             var departments = dbContext.Departments.ToList();
             DepartmentComboBox.ItemsSource = departments;
-            
+
         }
 
         public async void Button_Click(object sender, RoutedEventArgs e)
