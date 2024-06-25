@@ -56,7 +56,7 @@ public partial class HumanDepartmentDbContext : DbContext
         {
             var employees = new List<Employee>();
             var educationsWithMismatchedFieldOfStudy = dbContext.Educations
-                .Include(ed => ed.Employee) // Включаем связанные данные из таблицы Employee
+                .Include(ed => ed.Employee) 
                 .Where(ed => ed.FieldOfStudy != ed.Employee.Position)
                 .ToList();
 

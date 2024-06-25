@@ -102,11 +102,11 @@ namespace KursProjectDepartament.View
         }
         private void CreateOrderCards(List<Order> orders)
         {
-            EmployeeWrapPanel.Children.Clear(); // Очищаем WrapPanel перед добавлением новых карточек
+            EmployeeWrapPanel.Children.Clear(); 
 
             foreach (var order in orders)
             {
-                // Создаем новую карточку
+                
                 var card = new Border
                 {
                     BorderBrush = Brushes.Black,
@@ -118,10 +118,10 @@ namespace KursProjectDepartament.View
                     Background = Brushes.LightGray
                 };
 
-                // Добавляем содержимое карточки
+               
                 var stackPanel = new StackPanel();
 
-                // Добавляем информацию о приказе в текстовые блоки или другие элементы управления
+                
                 var textBlock1 = new TextBlock
                 {
                     Text = $"Дата: {order.OrderDate}",
@@ -144,10 +144,10 @@ namespace KursProjectDepartament.View
                 };
                 stackPanel.Children.Add(textBlock3);
 
-                // Добавляем созданный StackPanel в карточку
+                
                 card.Child = stackPanel;
 
-                // Добавляем карточку в WrapPanel
+                
                 EmployeeWrapPanel.Children.Add(card);
             }
         }
