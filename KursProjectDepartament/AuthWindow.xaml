@@ -16,7 +16,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Username:" Margin="10"/>
+        <TextBlock Text="Username:" Margin="10" FontFamily="Regular" FontWeight="Bold"/>
         <TextBox x:Name="UsernameTextBox" Grid.Row="1" Margin="10"/>
         <StackPanel Margin="0,0,0,88" Grid.Row="3">
         <PasswordBox x:Name="PasswordBox" Grid.Row="3" Margin="10,10,10,118" Height="30"

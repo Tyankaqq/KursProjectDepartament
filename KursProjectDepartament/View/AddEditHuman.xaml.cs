@@ -94,5 +94,6 @@ namespace KursProjectDepartament.View
 
             MessageBox.Show("Данные сохранены успешно!");
         }
+
     }
 }
