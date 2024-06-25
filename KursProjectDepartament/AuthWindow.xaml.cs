@@ -29,7 +29,7 @@ namespace KursProjectDepartament.View
             string username = UsernameTextBox.Text;
             string password = PasswordBox.Password;
             
-            // Простая проверка логина и пароля
+            
             if (username == "admin" && password == "admin")
             {
                 MainWindow mainWindow = new MainWindow();

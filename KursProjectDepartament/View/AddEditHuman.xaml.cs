@@ -64,7 +64,7 @@ namespace KursProjectDepartament.View
             var selectedDepartment = (Department)DepartmentComboBox.SelectedItem;
             if (selectedDepartment != null)
             {
-                // Создаем нового сотрудника и сохраняем его в базе данных
+                
                 var newEmployee = new Employee
                 {
                     LastName = surname,

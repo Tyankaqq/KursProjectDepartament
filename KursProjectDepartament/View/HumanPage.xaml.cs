@@ -242,14 +242,13 @@ namespace KursProjectDepartament.View
         }
         private void RefreshEmployeeCards(List<Education> educations)
         {
-            EmployeeWrapPanel.Children.Clear(); // Очищаем текущие карточки сотрудников
-
+            EmployeeWrapPanel.Children.Clear(); 
             foreach (var education in educations)
             {
-                var employee = education.Employee; // Получаем сотрудника из образования
+                var employee = education.Employee; 
 
-                var card = CreateEmployeeCard(employee); // Создаем карточку сотрудника на основе полученного сотрудника
-                EmployeeWrapPanel.Children.Add(card); // Добавляем карточку сотрудника в WrapPanel
+                var card = CreateEmployeeCard(employee); 
+                EmployeeWrapPanel.Children.Add(card); 
             }
         }
     }
