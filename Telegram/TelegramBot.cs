@@ -16,7 +16,7 @@ public class TelegramBot
     public TelegramBot(string botToken)
     {
         _botClient = new TelegramBotClient(botToken);
-        _botLogic = new BotLogic(_botClient, new HumanDepartmentDbContext()); // Инициализируем BotLogic
+        _botLogic = new BotLogic(_botClient, new HumanDepartmentDbContext()); 
     }
 
     public async Task StartAsync(CancellationToken cancellationToken = default)
@@ -30,7 +30,7 @@ public class TelegramBot
         };
 
         _botClient.StartReceiving(
-            updateHandler: HandleUpdateAsync, // Передаем метод обработчика напрямую
+            updateHandler: HandleUpdateAsync, 
             pollingErrorHandler: HandlePollingErrorAsync,
             receiverOptions: receiverOptions,
             cancellationToken: cts.Token

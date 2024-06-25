@@ -94,8 +94,7 @@ public class BotLogic
  
     private async Task HandleEmployeePromotionsCommandAsync(long chatId)
     {
-        // Для примера реализации обработчика команды /employee_promotions
-        // Получаем информацию о сотруднике, возможно, используя другие команды
+        
         await _botClient.SendTextMessageAsync(
             chatId: chatId,
             text: "Введите идентификатор сотрудника для получения списка его приказов и распоряжений:"
