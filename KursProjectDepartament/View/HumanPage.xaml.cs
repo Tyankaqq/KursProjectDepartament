@@ -66,7 +66,7 @@ namespace KursProjectDepartament.View
                 {
                     Children =
                     {
-                        
+
                         new TextBlock { Text = $"{employee.LastName} {employee.FirstName} {employee.MiddleName}", FontSize = 16, FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Center, Margin = new Thickness(0, 0, 0, 5) },
                         new TextBlock { Text = employee.Position, FontSize = 14, HorizontalAlignment = HorizontalAlignment.Center, Margin = new Thickness(0, 0, 0, 5) },
                         new TextBlock { Text = $"Телефон: {employee.PhoneNumber}", FontSize = 12, Margin = new Thickness(0, 0, 0, 5) },
@@ -80,13 +80,26 @@ namespace KursProjectDepartament.View
                     }
                 }
             };
+            var contextMenu = new ContextMenu();
+
+            var editMenuItem = new MenuItem { Header = "Редактировать" };
+            editMenuItem.Click += (s, e) => EditEmployee(employee);
+
+            var deleteMenuItem = new MenuItem { Header = "Удалить" };
+            deleteMenuItem.Click += (s, e) => DeleteEmployee(employee);
+
+            contextMenu.Items.Add(editMenuItem);
+            contextMenu.Items.Add(deleteMenuItem);
+
+            card.ContextMenu = contextMenu;
 
             return card;
+
         }
         private void EmployeesWithoutHigherEducation_Click(object sender, RoutedEventArgs e)
         {
-            using(var dbContext = new HumanDepartmentDbContext())
-    {
+            using (var dbContext = new HumanDepartmentDbContext())
+            {
                 var educations = dbContext.GetEmployeesWithoutHigherEducation();
                 RefreshEmployeeCards(educations);
             }
@@ -102,11 +115,11 @@ namespace KursProjectDepartament.View
         }
         private void CreateOrderCards(List<Order> orders)
         {
-            EmployeeWrapPanel.Children.Clear(); 
+            EmployeeWrapPanel.Children.Clear();
 
             foreach (var order in orders)
             {
-                
+
                 var card = new Border
                 {
                     BorderBrush = Brushes.Black,
@@ -118,10 +131,10 @@ namespace KursProjectDepartament.View
                     Background = Brushes.LightGray
                 };
 
-               
+
                 var stackPanel = new StackPanel();
 
-                
+
                 var textBlock1 = new TextBlock
                 {
                     Text = $"Дата: {order.OrderDate}",
@@ -144,10 +157,10 @@ namespace KursProjectDepartament.View
                 };
                 stackPanel.Children.Add(textBlock3);
 
-                
+
                 card.Child = stackPanel;
 
-                
+
                 EmployeeWrapPanel.Children.Add(card);
             }
         }
@@ -162,7 +175,7 @@ namespace KursProjectDepartament.View
                         .Where(o => o.EmployeeId == employeeId)
                         .ToList();
 
-                    CreateOrderCards(orders); // Используем новый метод для создания карточек Order
+                    CreateOrderCards(orders);
                 }
             }
             else
@@ -242,13 +255,65 @@ namespace KursProjectDepartament.View
         }
         private void RefreshEmployeeCards(List<Education> educations)
         {
-            EmployeeWrapPanel.Children.Clear(); 
+            EmployeeWrapPanel.Children.Clear();
             foreach (var education in educations)
             {
-                var employee = education.Employee; 
+                var employee = education.Employee;
 
-                var card = CreateEmployeeCard(employee); 
-                EmployeeWrapPanel.Children.Add(card); 
+                var card = CreateEmployeeCard(employee);
+                EmployeeWrapPanel.Children.Add(card);
+            }
+        }
+        
+        private void EditEmployee(Employee employee)
+        {
+
+            var editWindow = new EditEmployeeWindow(employee);
+            if (editWindow.ShowDialog() == false)
+            {
+                EmployeeWrapPanel.Children.Clear();
+                LoadEmployeeDetails();
+            }
+        }
+
+        private void DeleteEmployee(Employee employee)
+        {
+            var result = MessageBox.Show($"Вы уверены, что хотите удалить сотрудника {employee.FirstName} {employee.LastName}?", "Удаление сотрудника", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                using (var dbContext = new HumanDepartmentDbContext())
+                {
+                    // 1. Удаление записей из связанных таблиц
+                    // Удаление из таблицы Education
+                    var educations = dbContext.Educations.Where(e => e.EmployeeId == employee.EmployeeId).ToList();
+                    dbContext.Educations.RemoveRange(educations);
+
+                    // Удаление из таблицы Order
+                    var orders = dbContext.Orders.Where(o => o.EmployeeId == employee.EmployeeId).ToList();
+                    dbContext.Orders.RemoveRange(orders);
+
+                    // Удаление из таблицы Promotion
+                    var promotions = dbContext.Promotions.Where(p => p.EmployeeId == employee.EmployeeId).ToList();
+                    dbContext.Promotions.RemoveRange(promotions);
+
+                    // Удаление из таблицы SickLeaf
+                    var sickLeaves = dbContext.SickLeaves.Where(s => s.EmployeeId == employee.EmployeeId).ToList();
+                    dbContext.SickLeaves.RemoveRange(sickLeaves);
+
+                    // Удаление из таблицы Vacation
+                    var vacations = dbContext.Vacations.Where(v => v.EmployeeId == employee.EmployeeId).ToList();
+                    dbContext.Vacations.RemoveRange(vacations);
+
+                    // Удаление из таблицы WorkHistory
+                    var workHistories = dbContext.WorkHistories.Where(w => w.EmployeeId == employee.EmployeeId).ToList();
+                    dbContext.WorkHistories.RemoveRange(workHistories);
+
+                    // 2. Удаление сотрудника из таблицы Employees
+                    dbContext.Employees.Remove(employee);
+                    dbContext.SaveChanges();
+                    EmployeeWrapPanel.Children.Clear();
+                    LoadEmployeeDetails();
+                }
             }
         }
     }
