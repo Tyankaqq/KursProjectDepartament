@@ -17,9 +17,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Text="Username:" Margin="10" FontFamily="Regular" FontWeight="Bold"/>
-        <TextBox x:Name="UsernameTextBox" Grid.Row="1" Margin="10"/>
+        <TextBox x:Name="UsernameTextBox" Grid.Row="1" Margin="10" Text="admin"/>
         <StackPanel Margin="0,0,0,88" Grid.Row="3">
-        <PasswordBox x:Name="PasswordBox" Grid.Row="3" Margin="10,10,10,118" Height="30"
+        <PasswordBox x:Name="PasswordBox" Grid.Row="3" Margin="10,10,10,118" Height="30" Password="admin"
     materialDesign:HintAssist.HelperText="At least 8 characters"
   materialDesign:HintAssist.Hint="Password"
     materialDesign:PasswordBoxAssist.Password="{Binding Password1, Mode=TwoWay}"

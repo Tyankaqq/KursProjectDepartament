@@ -95,6 +95,7 @@ namespace KursProjectDepartament.View
 
             return card;
 
+
         }
         private void EmployeesWithoutHigherEducation_Click(object sender, RoutedEventArgs e)
         {
@@ -166,21 +167,42 @@ namespace KursProjectDepartament.View
         }
         private void EmployeePromotions_Click(object sender, RoutedEventArgs e)
         {
-            int employeeId;
-            if (int.TryParse(EmployeeIdTextBox.Text, out employeeId))
-            {
-                using (var dbContext = new HumanDepartmentDbContext())
-                {
-                    var orders = dbContext.Orders
-                        .Where(o => o.EmployeeId == employeeId)
-                        .ToList();
+            string firstName = FirstNameTextBox.Text;
+            string lastName = LastNameTextBox.Text;
 
-                    CreateOrderCards(orders);
-                }
-            }
-            else
+            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
             {
-                MessageBox.Show("Введите корректный ID сотрудника");
+                MessageBox.Show("Введите корректные имя и фамилию сотрудника!");
+                return;
+            }
+
+            // Получаем приказы и распоряжения для заданного сотрудника по имени и фамилии
+            var orders = GetEmployeeOrders(firstName, lastName);
+
+            if (orders == null || !orders.Any())
+            {
+                MessageBox.Show("Приказы и распоряжения не найдены для данного сотрудника");
+                return;
+            }
+
+            CreateOrderCards(orders); // Используем метод для создания карточек Order
+        }
+
+        private List<Order> GetEmployeeOrders(string firstName, string lastName)
+        {
+            using (var context = new HumanDepartmentDbContext())
+            {
+                // Получение EmployeeId по имени и фамилии
+                var employee = context.Employees.FirstOrDefault(e => e.FirstName == firstName && e.LastName == lastName);
+
+                if (employee == null)
+                {
+                    // Если сотрудник не найден, возвращаем пустой список
+                    return new List<Order>();
+                }
+
+                // Возвращаем все приказы и распоряжения для найденного сотрудника
+                return context.Orders.Where(o => o.EmployeeId == employee.EmployeeId).ToList();
             }
         }
 
@@ -208,6 +230,11 @@ namespace KursProjectDepartament.View
             using (var dbContext = new HumanDepartmentDbContext())
             {
                 var employees = dbContext.GetEmployeesNotLivingInCity(Adress.Text);
+                if (string.IsNullOrWhiteSpace(Adress.Text))
+                {
+                    MessageBox.Show("Введите город!");
+                    return;
+                }
                 RefreshEmployeeCards(employees);
             }
         }
@@ -256,6 +283,7 @@ namespace KursProjectDepartament.View
         private void RefreshEmployeeCards(List<Education> educations)
         {
             EmployeeWrapPanel.Children.Clear();
+
             foreach (var education in educations)
             {
                 var employee = education.Employee;
@@ -264,7 +292,6 @@ namespace KursProjectDepartament.View
                 EmployeeWrapPanel.Children.Add(card);
             }
         }
-        
         private void EditEmployee(Employee employee)
         {
 
@@ -318,4 +345,3 @@ namespace KursProjectDepartament.View
         }
     }
 }
-

@@ -30,7 +30,7 @@ namespace KursProjectDepartament.Model
             this.execute(parameter!);
             var command = new RelayCommand(ExecuteCommand);
 
-            // Для примера, здесь мы вызываем метод ExecuteCommand при выполнении команды
+            
             command.Execute(null);
         }
 
@@ -75,6 +75,7 @@ namespace KursProjectDepartament.Model
 
             return childrenCountByMaritalStatus;
         }
+
     }
 }
 

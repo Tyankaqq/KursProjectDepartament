@@ -20,26 +20,20 @@ namespace KursProjectDepartament.View
     /// </summary>
     public partial class AddEditHuman : Page
     {
-        public string Surname { get; private set; }
-        public string Name { get; private set; }
-        public string MiddleName { get; private set; }
-        public string Address { get; private set; }
-        public DateTime BirthDate { get; private set; }
-        public string MaritalStatus { get; private set; }
-        public string PhoneNumber { get; private set; }
-        public string Email { get; private set; }
-        public string HireDate { get; private set; }
-        public string Gender { get; private set; }
-        public int ChildrenCount { get; private set; }
 
-        private readonly HumanDepartmentDbContext dbContext = new HumanDepartmentDbContext();
 
-        public AddEditHuman()
+        private HumanDepartmentDbContext dbContext = new HumanDepartmentDbContext();
+        private Employee Employee { get; set; }
+
+        public AddEditHuman(Employee employee)
         {
             InitializeComponent();
-            dbContext = new HumanDepartmentDbContext();
             LoadDepartments();
+            Employee = employee;
+            DataContext = Employee;
         }
+
+
         private void LoadDepartments()
         {
             var departments = dbContext.Departments.ToList();
@@ -49,7 +43,7 @@ namespace KursProjectDepartament.View
 
         public async void Button_Click(object sender, RoutedEventArgs e)
         {
-            string surname = SurnameTextBox.Text;
+            string surname = LastName.Text;
             string name = NameTextBox.Text;
             string middleName = MiddleNameTextBox.Text;
             string address = AddressTextBox.Text;
@@ -64,7 +58,7 @@ namespace KursProjectDepartament.View
             var selectedDepartment = (Department)DepartmentComboBox.SelectedItem;
             if (selectedDepartment != null)
             {
-                
+
                 var newEmployee = new Employee
                 {
                     LastName = surname,
@@ -80,20 +74,18 @@ namespace KursProjectDepartament.View
                     children = childrenCount,
                     Department = selectedDepartment
                 };
-
                 dbContext.Employees.Add(newEmployee);
                 dbContext.SaveChanges();
-
             }
             else
             {
                 MessageBox.Show("Пожалуйста, выберите отдел.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
             MainWindow.frame.Navigate(new HumanPage());
 
             MessageBox.Show("Данные сохранены успешно!");
         }
 
+       
     }
 }

@@ -1,4 +1,5 @@
-﻿using KursProjectDepartament.View;
+﻿using KursProjectDepartament.Model;
+using KursProjectDepartament.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,12 +36,12 @@ namespace KursProjectDepartament
 
         private void Button_Click1(object sender, RoutedEventArgs e)
         {
-            FrameContainer.Navigate(new AddEditHuman());
+            FrameContainer.Navigate(new AddEditHuman(new Employee()));
         }
 
         private void OpenAddEditHumanButton_Click(object sender, RoutedEventArgs e)
         {
-            AddEditHuman addEditPage = new AddEditHuman();
+            AddEditHuman addEditPage = new AddEditHuman(new Employee());
             FrameContainer.Navigate(addEditPage);
         }
 

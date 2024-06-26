@@ -14,7 +14,7 @@ public partial class Employee : Baseclass
 
     public int children;
 
-    public int Children 
+    public int Children
     {
         get { return children; }
         set
@@ -169,4 +169,3 @@ public partial class Employee : Baseclass
     public virtual ICollection<WorkHistory> WorkHistories { get; set; } = new List<WorkHistory>();
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }
-

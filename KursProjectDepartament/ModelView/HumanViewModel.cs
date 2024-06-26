@@ -39,7 +39,7 @@ namespace KursProjectDepartament.ModelView
                 return addCommand ??
                     (addCommand = new RelayCommand(obj =>
                     {
-                        AddEditHuman window = new AddEditHuman();
+                        AddEditHuman window = new AddEditHuman(new Employee());
                     }));
             }
         }

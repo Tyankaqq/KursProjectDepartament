@@ -35,7 +35,7 @@ public partial class HumanDepartmentDbContext : DbContext
     public Employee GetEmployeeById(int? employeeId)
     {
         return Employees.FirstOrDefault(e => e.EmployeeId == employeeId);
-        
+
     }
 
     // Список сотрудников без высшего образования
@@ -56,7 +56,7 @@ public partial class HumanDepartmentDbContext : DbContext
         {
             var employees = new List<Employee>();
             var educationsWithMismatchedFieldOfStudy = dbContext.Educations
-                .Include(ed => ed.Employee) 
+                .Include(ed => ed.Employee)
                 .Where(ed => ed.FieldOfStudy != ed.Employee.Position)
                 .ToList();
 
@@ -69,11 +69,8 @@ public partial class HumanDepartmentDbContext : DbContext
         }
     }
 
-    // Все приказы и распоряжения для заданного сотрудника
-    public List<Promotion> GetEmployeePromotions(int employeeId)
-    {
-        return Promotions.Where(p => p.EmployeeId == employeeId).ToList();
-    }
+
+
 
 
     // Список всех детей сотрудников (в зависимости от семейного положения)
@@ -103,7 +100,7 @@ public partial class HumanDepartmentDbContext : DbContext
     // Список сотрудников на больничном или в отпуске в заданный период
     public List<Employee> GetEmployeesOnLeave(DateTime startDate, DateTime endDate)
     {
-        var allSickLeaves = SickLeaves.ToList(); 
+        var allSickLeaves = SickLeaves.ToList(); // Загрузка всех записей из таблицы SickLeaves с включением связанного сотрудника
 
         var employeesOnSickLeave = new List<Employee>();
 
@@ -118,7 +115,7 @@ public partial class HumanDepartmentDbContext : DbContext
             }
         }
 
-        return employeesOnSickLeave.Distinct().ToList(); 
+        return employeesOnSickLeave.Distinct().ToList(); // Удаление дубликатов сотрудников
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -232,6 +229,3 @@ public partial class HumanDepartmentDbContext : DbContext
     }
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
-
-
-

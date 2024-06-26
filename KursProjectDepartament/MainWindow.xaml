@@ -20,10 +20,10 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" Margin="12,20,12,20" IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+            <Button Grid.Row="0" Margin="12,20,10,20" IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
   Style="{StaticResource MaterialDesignFlatDarkBgButton}"
   ToolTip="MaterialDesignFlatDarkButton" Click="Button_Click" >Сотрудники</Button>
-            <Button Grid.Row="1" Margin="15" IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+            <Button Grid.Row="1" Margin="12,21,10,20" IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
   Style="{StaticResource MaterialDesignFlatDarkBgButton}"
   ToolTip="MaterialDesignFlatDarkButton" Click="Button_Click1" >Добавить</Button>
             <Frame x:Name="MainFrame" Grid.Row="2" Margin="20"/>
