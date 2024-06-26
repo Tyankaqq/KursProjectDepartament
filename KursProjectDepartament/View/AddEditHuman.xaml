@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:KursProjectDepartament.View"
         xmlns:validation="clr-namespace:KursProjectDepartament.Validation"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        
         mc:Ignorable="d"
         Title="AddEditHuman" Height="1000" Width="800">
     <Page.Resources>
@@ -47,12 +46,11 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition Height="80"/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -63,19 +61,20 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Grid.Row="0" Background="#eceff1">
             <Label Content="Введите фамилию сотрудника" Margin="10 0"  Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <TextBox x:Name="SurnameTextBox" Margin="10 0" FontSize="16" Foreground="Black" Width="770">
+            <TextBox x:Name="SurnameTextBox" Margin="10 0" FontSize="16" Background="White" Foreground="Black" Width="770" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource InputControlErrors}" Height="26">
                 <Binding Path="Surname" UpdateSourceTrigger="PropertyChanged">
-                <Binding.ValidationRules>
-                    <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
-                    <validation:NotEmpty ValidatesOnTargetUpdated="True"/>
-                </Binding.ValidationRules>
+                    <Binding.ValidationRules>
+                        <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
+                        <validation:NotEmpty ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
                 </Binding>
             </TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="1" Background="#eceff1">
             <Label Content="Введите имя " Margin="10 0" Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <TextBox x:Name="NameTextBox" FontSize="16" Foreground="Black" Width="773">
+            <TextBox x:Name="NameTextBox" FontSize="16" Background ="White" Foreground="Black" Width="772" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"
+                 Style="{StaticResource InputControlErrors}" Height="25">
                 <Binding Path="Surname" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
@@ -87,7 +86,7 @@
 
         <StackPanel Orientation="Vertical" Grid.Row="2" Background="#eceff1">
             <Label Content="Введите отчество" Margin="10 0" Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <TextBox x:Name="MiddleNameTextBox" Margin="10 0" FontSize="16" Foreground="Black" Width="768">
+            <TextBox x:Name="MiddleNameTextBox" Margin="10 0" FontSize="16" Foreground="Black" Width="768" VerticalAlignment="Center" Validation.ErrorTemplate="{StaticResource ErrorTemplate}">
                 <Binding Path="Surname" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
@@ -97,63 +96,119 @@
             </TextBox>
         </StackPanel>
 
-        <StackPanel Orientation="Vertical" Grid.Row="3" Background="#eceff1">
+        <StackPanel Orientation="Vertical" Grid.Row="2" Background="#eceff1" Margin="0,71,0,71" Grid.RowSpan="3">
             <Label Content="Выберите отдел" Margin="10 0" Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <ComboBox x:Name="DepartmentComboBox" Margin="10 0" FontSize="16" DisplayMemberPath="DepartmentName" Foreground="Black" Width="768"/>
+            <ComboBox x:Name="DepartmentComboBox" FontSize="13" DisplayMemberPath="DepartmentName" Foreground="Black" Width="768"
+            materialDesign:TextFieldAssist.HasClearButton="True"
+            ItemsSource="{Binding ShortStringList}"
+            Style="{StaticResource MaterialDesignOutlinedComboBox}" Height="51" SelectedItem="{Binding SelectedValidationOutlined, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
 
 
         <StackPanel Orientation="Vertical" Grid.Row="4" Background="#eceff1">
             <Label Content="Введите адрес проживания сотрудника" Margin="10 0" Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <TextBox x:Name="AddressTextBox" Margin="10 0" FontSize="16" Foreground="Black" Width="768"/>
+            <TextBox x:Name="AddressTextBox" Margin="10 0" FontSize="16" Background="White" Foreground="Black" Width="768"  Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource InputControlErrors}" Height="30">
+                <Binding Path="Surname" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
+                        <validation:NotEmpty ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
 
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="5" Background="#eceff1">
             <Label Content="Выберите Дату Рождения сотрудника" Margin="10 0" Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <DatePicker x:Name="BirthDayDatePicker" SelectedDate="{Binding SelectedEmployee.BirthDate, Mode=TwoWay}" 
+            <DatePicker x:Name="BirthDayDatePicker" SelectedDate="{Binding SelectedEmployee.BirthDate, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                     DisplayDateStart="1900-01-01"
                     DisplayDateEnd="2030-12-31"
                     materialDesign:HintAssist.Hint="Pick Date"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}" Width="772"/>
+
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="6" Background="#eceff1">
             <Label Content="Введите должность сотрудника" Margin="10 0" Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <TextBox x:Name="PositionTextBox" Margin="10 0" FontSize="16" Foreground="Black" Width="770"/>
+            <TextBox x:Name="PositionTextBox" Margin="10 0" FontSize="16" Background="White" Foreground="Black" Width="770" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource InputControlErrors}">
+                <Binding Path="Surname" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
+                        <validation:NotEmpty ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="7" Background="#eceff1">
             <Label Content="Введите семейное положение " Margin="10 0" Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <TextBox x:Name="MaritalStatusTextBox" Margin="10 0" FontSize="16" Foreground="Black" Width="771"/>
+            <TextBox x:Name="MaritalStatusTextBox" Margin="10 0" FontSize="16" Background="White" Foreground="Black" Width="771" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource InputControlErrors}">
+                <Binding Path="Surname" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
+                        <validation:NotEmpty ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="8" Background="#eceff1">
             <Label Content="Введите номер телефона " Margin="10 0" Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <TextBox x:Name="PhoneNumberTextBox" Margin="10 0" FontSize="16" MaxLength="12"  materialDesign:TransitionAssist.DisableTransitions="True" Foreground="Black" Width="771"/>
+            <TextBox x:Name="PhoneNumberTextBox" Margin="10 0" FontSize="16" MaxLength="12"  materialDesign:TransitionAssist.DisableTransitions="True" Background="White" Foreground="Black" Width="771" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource InputControlErrors}">
+                <Binding Path="Surname" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
+                        <validation:NotEmpty ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="9" Background="#eceff1">
             <Label Content="Введите электронную почту " Margin="10 0"  Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <TextBox x:Name="EmailTextBox" Foreground="Black" FontSize="16" Width="771"/>
+            <TextBox x:Name="EmailTextBox" Foreground="Black" FontSize="16" Width="771" Background="White" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"  
+                 Style="{StaticResource InputControlErrors}">
+                <Binding Path="Surname" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
+                        <validation:NotEmpty ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="10" Background="#eceff1">
             <Label Content="Введите дату найма сотрудника " Margin="10 0" Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <DatePicker x:Name="HireDateTextBox" SelectedDate="{Binding SelectedEmployee.BirthDate, Mode=TwoWay}" 
+            <DatePicker x:Name="HireDateTextBox" SelectedDate="{Binding SelectedEmployee.HireDate, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
         DisplayDateStart="1900-01-01"
         DisplayDateEnd="2030-12-31" Foreground="Black" Width="770"/>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="11" Background="#eceff1">
             <Label Content="Введите пол сотрудника " Margin="10 0" Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <TextBox x:Name="GenderTextBox" Margin="10 0" FontSize="16" Foreground="Black" Width="770"/>
+            <TextBox x:Name="GenderTextBox" Margin="10 0" FontSize="16" Foreground="Black" Width="770" Background="White" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"  
+                 Style="{StaticResource InputControlErrors}" Height="25">
+                <Binding Path="City" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
+                        <validation:NotEmpty ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="12" Background="#eceff1">
             <Label Content="Введите количество детей у сотрудника " Margin="10 0" Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <TextBox x:Name="ChildrenTextBox" Margin="10 0" Width="770"/>
+            <TextBox x:Name="ChildrenTextBox" Margin="10 0" Width="770" Background="White" Foreground="Black" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"  
+                 Style="{StaticResource InputControlErrors}" Height="26">
+                <Binding Path="Surname" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
+                        <validation:NotEmpty ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
         </StackPanel>
         <Grid Grid.Row="13" Background="#eceff1">
             <Grid.ColumnDefinitions>
