@@ -43,6 +43,5 @@ namespace KursProjectDepartament
             AddEditHuman addEditPage = new AddEditHuman();
             FrameContainer.Navigate(addEditPage);
         }
-
     }
 }

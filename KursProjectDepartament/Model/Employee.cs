@@ -20,7 +20,7 @@ public partial class Employee : Baseclass
         set
         {
             children = value;
-            OnPropetyChanged(nameof(children));
+           OnPropertyChanged(nameof(children));
         }
     }
 
@@ -31,7 +31,7 @@ public partial class Employee : Baseclass
         set
         {
             firstName = value;
-            OnPropetyChanged(nameof(FirstName));
+            OnPropertyChanged(nameof(FirstName));
         }
     }
 
@@ -42,7 +42,7 @@ public partial class Employee : Baseclass
         set
         {
             lastName = value;
-            OnPropetyChanged(nameof(LastName));
+            OnPropertyChanged(nameof(LastName));
         }
     }
 
@@ -53,7 +53,7 @@ public partial class Employee : Baseclass
         set
         {
             middleName = value;
-            OnPropetyChanged(nameof(MiddleName));
+            OnPropertyChanged(nameof(MiddleName));
         }
     }
 
@@ -64,7 +64,7 @@ public partial class Employee : Baseclass
         set
         {
             birthDate = value;
-            OnPropetyChanged(nameof(BirthDate));
+            OnPropertyChanged(nameof(BirthDate));
         }
     }
 
@@ -75,7 +75,7 @@ public partial class Employee : Baseclass
         set
         {
             gender = value;
-            OnPropetyChanged(nameof(Gender));
+            OnPropertyChanged(nameof(Gender));
         }
     }
 
@@ -86,7 +86,7 @@ public partial class Employee : Baseclass
         set
         {
             maritalStatus = value;
-            OnPropetyChanged(nameof(MaritalStatus));
+            OnPropertyChanged(nameof(MaritalStatus));
         }
     }
 
@@ -97,7 +97,7 @@ public partial class Employee : Baseclass
         set
         {
             phoneNumber = value;
-            OnPropetyChanged(nameof(PhoneNumber));
+            OnPropertyChanged(nameof(PhoneNumber));
         }
     }
 
@@ -108,7 +108,7 @@ public partial class Employee : Baseclass
         set
         {
             email = value;
-            OnPropetyChanged(nameof(Email));
+            OnPropertyChanged(nameof(Email));
         }
     }
 
@@ -119,7 +119,7 @@ public partial class Employee : Baseclass
         set
         {
             address = value;
-            OnPropetyChanged(nameof(Address));
+            OnPropertyChanged(nameof(Address));
         }
     }
 
@@ -130,7 +130,7 @@ public partial class Employee : Baseclass
         set
         {
             hireDate = value;
-            OnPropetyChanged(nameof(HireDate));
+            OnPropertyChanged(nameof(HireDate));
         }
     }
 
@@ -141,7 +141,7 @@ public partial class Employee : Baseclass
         set
         {
             position = value;
-            OnPropetyChanged(nameof(Position));
+            OnPropertyChanged(nameof(Position));
         }
     }
 
@@ -152,7 +152,7 @@ public partial class Employee : Baseclass
         set
         {
             departmentId = value;
-            OnPropetyChanged(nameof(DepartmentId));
+            OnPropertyChanged(nameof(DepartmentId));
         }
     }
 

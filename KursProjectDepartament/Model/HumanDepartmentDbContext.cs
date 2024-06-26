@@ -69,15 +69,12 @@ public partial class HumanDepartmentDbContext : DbContext
         }
     }
 
-    // Все приказы и распоряжения для заданного сотрудника
-    public List<Promotion> GetEmployeePromotions(int employeeId)
-    {
-        return Promotions.Where(p => p.EmployeeId == employeeId).ToList();
-    }
 
 
-    // Список всех детей сотрудников (в зависимости от семейного положения)
-    public List<Employee> GetAllChildren()
+
+
+        // Список всех детей сотрудников (в зависимости от семейного положения)
+        public List<Employee> GetAllChildren()
     {
         var allChildren = Employees
             .Where(e => e.Children > 0)

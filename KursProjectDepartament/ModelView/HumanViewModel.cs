@@ -22,7 +22,7 @@ namespace KursProjectDepartament.ModelView
             set
             {
                 selecteEmployee = value;
-                OnPropetyChanged("SelectedHuman");
+                OnPropertyChanged("SelectedHuman");
             }
         }
         public HumanViewModel(AddEditHuman page)

@@ -4,10 +4,45 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KursProjectDepartament.View"
+        xmlns:validation="clr-namespace:KursProjectDepartament.Validation"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         
         mc:Ignorable="d"
         Title="AddEditHuman" Height="1000" Width="800">
+    <Page.Resources>
+        <validation:NameValidationRule x:Key="NameValidation" />
+        <validation:OnlyDigitsValidationRule x:Key="OnlyDigitsValidation"/>
+        <validation:NotEmpty x:Key="nameEmpty"/>
+        <validation:SelectionValidationRule x:Key="SelectValidate"/>
+        <Style x:Key="InputControlErrors" TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"    
+              Value="{Binding RelativeSource={x:Static RelativeSource.Self},    
+                              Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ComboBoxControlErrors"  TargetType="{x:Type ComboBox}" >
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" 
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--Create a template to show if validation fails-->
+        <ControlTemplate x:Key="ErrorTemplate">
+            <DockPanel>
+                <Border BorderBrush="Red" BorderThickness="1" >
+                    <AdornedElementPlaceholder/>
+                </Border>
+                <TextBlock Foreground="Red" FontSize="20" Text="!" />
+            </DockPanel>
+        </ControlTemplate>
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -28,17 +63,38 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Grid.Row="0" Background="#eceff1">
             <Label Content="Введите фамилию сотрудника" Margin="10 0"  Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <TextBox x:Name="SurnameTextBox" Margin="10 0" FontSize="16" Foreground="Black" Width="770"/>
+            <TextBox x:Name="SurnameTextBox" Margin="10 0" FontSize="16" Foreground="Black" Width="770">
+                <Binding Path="Surname" UpdateSourceTrigger="PropertyChanged">
+                <Binding.ValidationRules>
+                    <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
+                    <validation:NotEmpty ValidatesOnTargetUpdated="True"/>
+                </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="1" Background="#eceff1">
             <Label Content="Введите имя " Margin="10 0" Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <TextBox x:Name="NameTextBox" FontSize="16" Foreground="Black" Width="773"/>
+            <TextBox x:Name="NameTextBox" FontSize="16" Foreground="Black" Width="773">
+                <Binding Path="Surname" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
+                        <validation:NotEmpty ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="2" Background="#eceff1">
             <Label Content="Введите отчество" Margin="10 0" Foreground="#8050d0" FontFamily="Regular" FontWeight="DemiBold"/>
-            <TextBox x:Name="MiddleNameTextBox" Margin="10 0" FontSize="16" Foreground="Black" Width="768"/>
+            <TextBox x:Name="MiddleNameTextBox" Margin="10 0" FontSize="16" Foreground="Black" Width="768">
+                <Binding Path="Surname" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validation:NameValidationRule ValidatesOnTargetUpdated="True"/>
+                        <validation:NotEmpty ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="3" Background="#eceff1">
